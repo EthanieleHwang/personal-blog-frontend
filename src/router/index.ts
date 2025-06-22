@@ -13,6 +13,7 @@ const router = createRouter({
           name: "home",
           component: () => import("../views/HomeView.vue"),
         },
+
         // 在这里添加其他需要使用该布局的页面
         // {
         //   path: 'categories',
@@ -25,6 +26,16 @@ const router = createRouter({
         //   component: () => import('../views/TagsView.vue')
         // }
       ],
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/LoginView.vue"),
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/RegisterView.vue"),
     },
     // 在这里添加其他不需要使用该布局的页面，例如登录、注册页
     // {
