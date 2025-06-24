@@ -31,7 +31,8 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-
+import { useAuthStore } from "../stores/auth";
+console.log("isLoggedIn:", useAuthStore().isLoggedIn);
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
