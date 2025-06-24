@@ -60,7 +60,8 @@ const loginRules = reactive<FormRules>({
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 });
-
+console.log(loading.value);
+console.log(loading);
 const handleLogin = async () => {
   if (!loginFormRef.value) return;
   await loginFormRef.value.validate(async (valid) => {
