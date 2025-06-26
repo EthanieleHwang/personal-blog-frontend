@@ -1,0 +1,7 @@
+✨ feat: Add article and profile management features
+
+- Introduce ArticleCard component for displaying articles.
+- Implement ArticleEditorView for creating/editing articles.
+- Add ProfileView for user profile management.
+- Update router configuration to include new views.
+- Add article store and common types.

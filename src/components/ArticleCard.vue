@@ -1,7 +1,6 @@
 <template>
   <el-card shadow="hover" class="article-card">
     <div class="card-content">
-      <!-- (可选) 文章封面图 -->
       <div v-if="article.coverImageUrl" class="cover-image">
         <img :src="article.coverImageUrl" alt="cover" />
       </div>
@@ -23,11 +22,11 @@
           <span class="time"
             >发布于 {{ formattedDate(article.createdAt) }}</span
           >
-          <span class="category">
-            <el-tag size="small">{{ article.category?.name }}</el-tag>
+          <span v-if="article.category" class="category">
+            <el-tag size="small">{{ article.category.name }}</el-tag>
           </span>
         </div>
-        <div class="tags">
+        <div v-if="article.tags?.length" class="tags">
           <el-tag
             v-for="tag in article.tags"
             :key="tag.id"
@@ -46,11 +45,11 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import type { PropType } from "vue";
+import type { ArticleItemVO } from "../common/types"; // 确认路径正确
 
-// 定义接收的prop类型，这里我们先用any，后面可以替换为我们定义的VO类型
 const props = defineProps({
   article: {
-    type: Object as PropType<any>,
+    type: Object as PropType<ArticleItemVO>,
     required: true,
   },
 });
@@ -58,7 +57,6 @@ const props = defineProps({
 const defaultAvatar =
   "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 
-// 格式化日期函数
 const formattedDate = (dateString: string) => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -82,6 +80,7 @@ const formattedDate = (dateString: string) => {
   width: 100%;
   height: auto;
   border-radius: 4px;
+  object-fit: cover;
 }
 .article-details {
   display: flex;
@@ -101,15 +100,17 @@ const formattedDate = (dateString: string) => {
   color: #606266;
   margin: 10px 0;
   flex-grow: 1;
+  line-height: 1.6;
 }
 .meta {
   display: flex;
   align-items: center;
   color: #909399;
   font-size: 13px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 .meta > span {
-  margin-right: 15px;
   display: flex;
   align-items: center;
 }
@@ -121,5 +122,6 @@ const formattedDate = (dateString: string) => {
 }
 .tag-item {
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 </style>

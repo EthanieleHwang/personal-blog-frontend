@@ -42,7 +42,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
-import request from "../utils/request"; // 引入我们封装的axios实例
+import request from "../common/utils/request"; // 引入我们封装的axios实例
 import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
