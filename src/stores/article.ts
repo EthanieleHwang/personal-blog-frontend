@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import request from "../common/utils/request"; // 确认路径正确
-import type { PageVO, ArticleItemVO } from "../common/types"; // 确认路径正确
+import type { PageVO, ArticleItemVO } from "../common/types/index"; // 确认路径正确
 
 export const useArticleStore = defineStore("article", () => {
   // State
@@ -26,8 +26,19 @@ export const useArticleStore = defineStore("article", () => {
       );
 
       // 直接使用返回的核心数据
-      articles.value = pageData.list;
-      total.value = pageData.total;
+      // Destructure for cleaner access and add null/undefined checks for robustness
+      if (pageData && pageData.data) {
+        const { list, total: pageTotal } = pageData.data;
+        articles.value = list || []; // Ensure list is an array, default to empty if null/undefined
+        total.value = pageTotal || 0; // Ensure total is a number, default to 0 if null/undefined
+      } else {
+        // Handle cases where pageData or pageData.data is null/undefined
+        console.warn(
+          "Received unexpected API response structure for articles."
+        );
+        articles.value = [];
+        total.value = 0;
+      }
     } catch (error) {
       console.error("Failed to fetch articles:", error);
       // 清空数据，避免显示旧的错误数据

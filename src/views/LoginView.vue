@@ -62,21 +62,31 @@ const loginRules = reactive<FormRules>({
 });
 console.log(loading.value);
 console.log(loading);
+// src/views/LoginView.vue
+
+// ... imports ...
+
 const handleLogin = async () => {
   if (!loginFormRef.value) return;
   await loginFormRef.value.validate(async (valid) => {
     if (valid) {
       loading.value = true;
       try {
-        const response = await request.post("/api/auth/login", loginForm);
-        // 我们的响应拦截器已经处理了业务code，这里可以直接用data
+        // 【【【 关键修改点：添加泛型类型 】】】
+        // 我们告诉 request.post，我们期望它最终返回一个包含token的对象
+        const response = await request.post<{ token: string }>(
+          "/api/auth/login",
+          loginForm
+        );
+
+        // 现在，TypeScript知道了 response 的类型是 { token: string }
+        // 所以访问 response.token 是类型安全的
         authStore.setToken(response.data.token);
+
         ElMessage.success("登录成功！");
-        // 跳转到首页
         await router.push("/");
       } catch (error: any) {
-        // 错误信息已在响应拦截器中打印，这里可以给用户一个通用提示
-        ElMessage.error(error.message || "登录失败，请检查用户名和密码");
+        // 这里的错误处理保持不变，因为拦截器会处理错误提示
       } finally {
         loading.value = false;
       }

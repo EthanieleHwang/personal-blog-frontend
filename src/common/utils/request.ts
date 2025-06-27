@@ -8,6 +8,7 @@ const service = axios.create({
   timeout: 10000,
 });
 
+// 请求拦截器 (保持不变)
 service.interceptors.request.use(
   (config) => {
     const authStore = useAuthStore();
@@ -21,15 +22,16 @@ service.interceptors.request.use(
   }
 );
 
+// 响应拦截器 (保持不变)
 service.interceptors.response.use(
   (response) => {
     const res = response.data as ApiResponse<any>;
-
     if (res.code !== 200) {
       ElMessage.error(res.message || "Error");
       return Promise.reject(new Error(res.message || "Error"));
     } else {
-      return res.data; // 这里返回的是 T
+      // 成功时，返回核心数据部分
+      return res.data;
     }
   },
   (error) => {
@@ -39,17 +41,4 @@ service.interceptors.response.use(
   }
 );
 
-// 导出包装函数，明确返回 Promise<T>
-const requestWrapper = {
-  get: <T = any>(url: string, config?: any) =>
-    service.get<ApiResponse<T>>(url, config).then((res) => res.data),
-  post: <T = any>(url: string, data?: any, config?: any) =>
-    service.post<ApiResponse<T>>(url, data, config).then((res) => res.data),
-  put: <T = any>(url: string, data?: any, config?: any) =>
-    service.put<ApiResponse<T>>(url, data, config).then((res) => res.data),
-  delete: <T = any>(url: string, config?: any) =>
-    service.delete<ApiResponse<T>>(url, config).then((res) => res.data),
-  // 可以根据需要添加其他方法
-};
-
-export default requestWrapper;
+export default service; // <-- 直接导出 service
