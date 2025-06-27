@@ -27,8 +27,8 @@ export const useArticleStore = defineStore("article", () => {
 
       // 直接使用返回的核心数据
       // Destructure for cleaner access and add null/undefined checks for robustness
-      if (pageData && pageData.data) {
-        const { list, total: pageTotal } = pageData.data;
+      if (pageData) {
+        const { list, total: pageTotal } = pageData;
         articles.value = list || []; // Ensure list is an array, default to empty if null/undefined
         total.value = pageTotal || 0; // Ensure total is a number, default to 0 if null/undefined
       } else {

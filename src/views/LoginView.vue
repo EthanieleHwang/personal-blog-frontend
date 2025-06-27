@@ -81,12 +81,13 @@ const handleLogin = async () => {
 
         // 现在，TypeScript知道了 response 的类型是 { token: string }
         // 所以访问 response.token 是类型安全的
-        authStore.setToken(response.data.token);
+        authStore.setToken(response.token);
 
         ElMessage.success("登录成功！");
         await router.push("/");
       } catch (error: any) {
         // 这里的错误处理保持不变，因为拦截器会处理错误提示
+        console.log("出现错误", error);
       } finally {
         loading.value = false;
       }
