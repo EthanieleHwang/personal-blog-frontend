@@ -17,11 +17,12 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.setItem("token", newToken);
   }
 
-  function logout() {
-    token.value = null;
-    user.value = null;
-    localStorage.removeItem("token");
-  }
+ // src/stores/auth.ts
+function logout() {
+  token.value = null; // 1. 清除Pinia内存中的token
+  user.value = null; // 2. 清除用户信息
+  localStorage.removeItem('token'); // 3. 【核心】清除localStorage中的token
+}
 
   return {
     // State

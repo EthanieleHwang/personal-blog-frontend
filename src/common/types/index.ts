@@ -59,3 +59,17 @@ export interface TagInfoVO {
   id: number;
   name: string;
 }
+
+// --- ↓↓↓ 这是我们需要添加的部分 ↓↓↓ ---
+
+/**
+ * 文章详情的视图对象 (View Object)
+ * 它继承了文章列表项的所有属性，并增加了额外字段
+ */
+export interface ArticleDetailVO extends ArticleItemVO {
+  contentMd: string; // 完整的Markdown内容
+  contentHtml: string | null; // (可选) 后端转换的HTML
+  allowComment: boolean;
+}
+
+// --- ↑↑↑ 添加结束 ↑↑↑ ---
