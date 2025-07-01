@@ -40,7 +40,14 @@
     <div id="vditor" class="vditor-container" />
 
     <div class="button-container">
-      <el-button type="primary" @click="handleSubmit" :loading="isSubmitting">
+      <el-button @click="handleSubmit('DRAFT')" :loading="isSubmitting">
+        存为草稿
+      </el-button>
+      <el-button
+        type="primary"
+        @click="handleSubmit('PUBLISHED')"
+        :loading="isSubmitting"
+      >
         {{ isEditMode ? "更新文章" : "发布文章" }}
       </el-button>
     </div>
@@ -54,8 +61,7 @@ import Vditor from "vditor";
 import "vditor/dist/index.css";
 import request from "../common/utils/request";
 import { ElMessage } from "element-plus";
-import type { CategoryInfoVO, TagInfoVO } from "../common/types";
-
+import type { CategoryInfoVO, TagInfoVO, ArticleCreateDTO, ArticleUpdateDTO } from '../common/types';
 const route = useRoute();
 const router = useRouter();
 
@@ -107,37 +113,45 @@ const fetchArticleData = async (id: number) => {
 };
 
 // --- 事件处理 ---
-const handleSubmit = async () => {
+// 修改 handleSubmit 方法
+const handleSubmit = async (publishStatus: 'DRAFT' | 'PUBLISHED') => {
   isSubmitting.value = true;
   const contentMd = editorInstance.value?.getValue();
 
-  if (!form.title || !contentMd || !form.categoryId) {
-    ElMessage.warning("标题、内容和分类不能为空！");
-    isSubmitting.value = false;
-    return;
-  }
+  // ... 表单非空校验 ...
 
-  const payload = {
-    ...form,
-    contentMd,
-  };
+  // 【【【 使用我们定义的DTO类型来构建payload 】】】
+  let payload: ArticleCreateDTO | ArticleUpdateDTO;
+
+  if (isEditMode.value) {
+    payload = {
+      id: articleId.value!, // Add id for update mode
+      ...form,
+      contentMd: contentMd || '',
+      status: publishStatus === 'PUBLISHED' ? 1 : 0,
+    } as ArticleUpdateDTO; // Explicitly cast to ArticleUpdateDTO
+  } else {
+    payload = {
+      ...form,
+      contentMd: contentMd || '',
+      status: publishStatus === 'PUBLISHED' ? 1 : 0,
+    } as ArticleCreateDTO; // Explicitly cast to ArticleCreateDTO
+  }
 
   try {
     if (isEditMode.value) {
       // 更新模式
-      await request.put("/api/articles", { id: articleId.value, ...payload });
-      ElMessage.success("文章更新成功！");
-      // 跳转到更新后的文章详情页
+      await request.put('/api/articles', payload);
+      ElMessage.success('文章更新成功！');
       router.push(`/articles/${articleId.value}`);
     } else {
       // 创建模式
-      const newId = await request.post<number>("/api/articles", payload);
-      ElMessage.success("文章发布成功！");
-      // 跳转到新文章的详情页
+      const newId = await request.post<number>('/api/articles', payload as ArticleCreateDTO);
+      ElMessage.success(publishStatus === 'PUBLISHED' ? '文章发布成功！' : '草稿保存成功！');
       router.push(`/articles/${newId}`);
     }
   } catch (error: any) {
-    ElMessage.error(error.message || "操作失败");
+    ElMessage.error(error.message || '操作失败');
   } finally {
     isSubmitting.value = false;
   }

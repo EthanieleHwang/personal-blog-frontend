@@ -44,6 +44,19 @@ const router = createRouter({
           component: () => import("../views/ArticleEditorView.vue"),
           meta: { requiresAuth: true }, // 需要登录
         },
+        // 在 children 数组中添加
+        {
+          path: "admin/categories",
+          name: "category-admin",
+          component: () => import("../views/CategoryAdminView.vue"),
+          meta: { requiresAuth: true }, // 标记为需要登录
+        },
+        {
+          path: "admin/tags",
+          name: "tag-admin",
+          component: () => import("../views/TagAdminView.vue"),
+          meta: { requiresAuth: true }, // 标记为需要登录
+        },
       ],
     },
     {

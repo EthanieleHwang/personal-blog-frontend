@@ -34,6 +34,10 @@
         我的
       </template>
       <el-menu-item index="/profile/settings">个人设置</el-menu-item>
+         <!-- 【【【 添加以下内容 】】】 -->
+      <el-menu-item index="/admin/categories">分类管理</el-menu-item>
+      <el-menu-item index="/admin/tags">标签管理</el-menu-item>
+      <!-- 【【【 添加结束 】】】 -->
       <!-- 为“退出登录”绑定点击事件 -->
       <el-menu-item index="logout" @click="handleLogout">退出登录</el-menu-item>
     </el-sub-menu>

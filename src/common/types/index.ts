@@ -60,7 +60,6 @@ export interface TagInfoVO {
   name: string;
 }
 
-// --- ↓↓↓ 这是我们需要添加的部分 ↓↓↓ ---
 
 /**
  * 文章详情的视图对象 (View Object)
@@ -72,4 +71,23 @@ export interface ArticleDetailVO extends ArticleItemVO {
   allowComment: boolean;
 }
 
-// --- ↑↑↑ 添加结束 ↑↑↑ ---
+/**
+ * 创建新文章时使用的数据传输对象 (Data Transfer Object)
+ */
+export interface ArticleCreateDTO {
+  title: string;
+  summary?: string; // 摘要是可选的
+  contentMd: string;
+  coverImageUrl?: string; // 封面图是可选的
+  categoryId: number;
+  tagIds?: number[]; // 标签是可选的
+  status: number; // 0 for DRAFT, 1 for PUBLISHED
+}
+
+/**
+ * 更新文章时使用的数据传输对象
+ */
+export interface ArticleUpdateDTO extends ArticleCreateDTO {
+  id: number; // 更新时必须包含文章ID
+}
+
