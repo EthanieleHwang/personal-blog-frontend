@@ -29,6 +29,9 @@ importers:
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      vditor:
+        specifier: ^3.11.1
+        version: 3.11.1
       vue:
         specifier: 3.5.17
         version: 3.5.17(typescript@5.8.3)
@@ -491,6 +494,9 @@ packages:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
 
+  diff-match-patch@1.0.5:
+    resolution: {integrity: sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -715,6 +721,9 @@ packages:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  vditor@3.11.1:
+    resolution: {integrity: sha512-7rjNSXYVyZG0mVZpUG2tfxwnoNtkcRCnwdSju+Zvpjf/r72iQa6kLpeThFMIKPuQ5CRnQQv6gnR3eNU6UGbC2Q==}
 
   vite@6.3.5:
     resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
@@ -1146,6 +1155,8 @@ snapshots:
 
   delayed-stream@1.0.0: {}
 
+  diff-match-patch@1.0.5: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -1386,6 +1397,10 @@ snapshots:
       picomatch: 4.0.2
 
   typescript@5.8.3: {}
+
+  vditor@3.11.1:
+    dependencies:
+      diff-match-patch: 1.0.5
 
   vite@6.3.5:
     dependencies:

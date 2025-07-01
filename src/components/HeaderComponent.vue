@@ -18,7 +18,11 @@
     <el-menu-item index="/">首页</el-menu-item>
     <el-menu-item index="/categories">分类</el-menu-item>
     <el-menu-item index="/tags">标签</el-menu-item>
-
+    <!-- 【【【 在这里添加一个按钮 】】】 -->
+    <el-menu-item index="/create-article">
+      <el-icon><EditPen /></el-icon>
+      写文章
+    </el-menu-item>
     <!-- 【【【 核心：根据登录状态动态显示菜单 】】】 -->
     <el-sub-menu v-if="authStore.isLoggedIn" index="/profile">
       <template #title>

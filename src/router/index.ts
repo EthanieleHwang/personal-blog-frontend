@@ -29,6 +29,21 @@ const router = createRouter({
           component: () => import("../views/ProfileView.vue"), // 假设的组件
           meta: { requiresAuth: true },
         },
+        // 【【【 添加以下内容 】】】
+        // 1. 创建新文章的路由
+        {
+          path: "create-article",
+          name: "create-article",
+          component: () => import("../views/ArticleEditorView.vue"),
+          meta: { requiresAuth: true }, // 需要登录
+        },
+        // 2. 编辑文章的路由
+        {
+          path: "edit-article/:id",
+          name: "edit-article",
+          component: () => import("../views/ArticleEditorView.vue"),
+          meta: { requiresAuth: true }, // 需要登录
+        },
       ],
     },
     {
