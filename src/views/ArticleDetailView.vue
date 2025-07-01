@@ -12,11 +12,13 @@
       </div>
 
       <!-- 文章正文 (渲染HTML) -->
-      <div class="markdown-body" v-html="articleHtml"></div>
+      <div class="markdown-body" v-html="article?.contentHtml"></div>
 
       <!-- (可选) 文章标签 -->
       <div v-if="article.tags?.length" class="tags">
-        <el-tag v-for="tag in article.tags" :key="tag.id" class="tag-item">{{ tag.name }}</el-tag>
+        <el-tag v-for="tag in article.tags" :key="tag.id" class="tag-item">{{
+          tag.name
+        }}</el-tag>
       </div>
     </div>
 
@@ -30,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
-import request from '../common/utils/request';
-import type { ArticleDetailVO } from '../common/types/index';
-import { parseMarkdown } from '../common/utils/markdown';
-import CommentComponent from '../components/CommentComponent.vue'; // 稍后创建
+import { ref, onMounted } from "vue"; // 移除 computed
+import { useRoute } from "vue-router";
+import request from "../common/utils/request";
+import type { ArticleDetailVO } from "../common/types/index";
+import { parseMarkdown } from "../common/utils/markdown";
+import CommentComponent from '../components/CommentComponent.vue'; // 导入评论组件
 
 const route = useRoute();
 const loading = ref(true);
@@ -44,32 +46,41 @@ const article = ref<ArticleDetailVO | null>(null);
 // 从URL中获取文章ID
 const articleId = Number(route.params.id);
 
-// 将Markdown内容转换为HTML
-const articleHtml = computed(() => {
-  if (article.value && article.value.contentMd) {
-    return parseMarkdown(article.value.contentMd);
-  }
-  return '';
-});
-
 // 获取文章详情数据
 const fetchArticleDetail = async () => {
-  if (!articleId) return;
+  if (!articleId) {
+    console.warn("文章ID无效，无法获取文章详情。");
+    loading.value = false;
+    return;
+  }
   loading.value = true;
+  console.log(`正在获取文章详情，ID: ${articleId}`);
   try {
     // 我们的request拦截器会自动返回核心数据部分
-    article.value = await request.get<ArticleDetailVO>(`/api/articles/${articleId}`);
+    const response = await request.get<ArticleDetailVO>(
+      `/api/articles/${articleId}`
+    );
+    console.log("获取文章详情成功，响应数据:", response);
+    // 将Markdown内容转换为HTML并存储
+    if (response && response.contentMd) {
+      response.contentHtml = await parseMarkdown(response.contentMd);
+      console.log("Markdown内容已转换为HTML。");
+    } else {
+      console.warn("文章内容（contentMd）为空或响应无效。");
+    }
+    article.value = response;
   } catch (error) {
-    console.error('获取文章详情失败:', error);
+    console.error("获取文章详情失败:", error);
     article.value = null;
   } finally {
     loading.value = false;
+    console.log("文章详情加载完成，loading状态设置为false。");
   }
 };
 
 // 格式化日期
 const formattedDate = (dateString: string) => {
-  if (!dateString) return '';
+  if (!dateString) return "";
   return new Date(dateString).toLocaleString();
 };
 

@@ -31,7 +31,7 @@
       </template>
       <el-menu-item index="/profile/settings">个人设置</el-menu-item>
       <!-- 为“退出登录”绑定点击事件 -->
-      <el-menu-item @click="handleLogout">退出登录</el-menu-item>
+      <el-menu-item index="logout" @click="handleLogout">退出登录</el-menu-item>
     </el-sub-menu>
 
     <el-menu-item v-else index="/login"> 登录 / 注册 </el-menu-item>

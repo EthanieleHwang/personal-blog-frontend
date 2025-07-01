@@ -17,10 +17,10 @@ const router = createRouter({
         },
         // 假设我们未来会有一个需要登录才能访问的文章创建页
         {
-          path: "create-article",
-          name: "create-article",
-          component: () => import("../views/ArticleEditorView.vue"), // 假设的组件
-          meta: { requiresAuth: true }, // 【【【 使用元信息标记需要认证 】】】
+          path: "articles/:id",
+          name: "article-detail",
+          component: () => import("../views/ArticleDetailView.vue"), // 假设的组件
+          meta: { requiresAuth: false }, //明确标记为公开访问
         },
         // 假设我们未来会有一个用户个人中心页面
         {
